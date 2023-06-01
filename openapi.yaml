@@ -1,0 +1,135 @@
+openai: 3.0.1
+
+info:
+    title: chatGPT Plugin ToDo List
+    version: 1.0.0
+    description: API Specification for chatGPT Plugin ToDo List
+
+paths: 
+    /todos:
+        get:
+            summary: Get all todos
+            operationId: getTodos
+            tags:
+                - todos
+            responses:
+                '200':
+                    description: OK
+                    content: 
+                        application/json:
+                            schema:
+                                type: object
+                                properties: 
+                                    todos:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Todo'
+        post:
+            summary: Create a todo
+            operationId: createTodo
+            tags:
+                - todos
+            requestBody:
+                description: Todo object to be created
+                required: true
+                content:
+                    application/json:
+                        schema: 
+                            $ref: '#/components/schemas/Todo'
+            responses:
+                '200':
+                    description: Success response
+                    content:
+                        application/json:
+                            schema: 
+                                $ref: '#/components/schemas/Todo' 
+        
+    /todos/{id}:
+        get:
+            summary: Get a todo by id
+            operationId: getTodo
+            tags:
+                - todos
+            parameters:
+                -   name: id
+                    in: path
+                    required: true
+                    description: Id of the todo to be retrieved
+                    schema: 
+                        type: string
+            responses:
+                '200':
+                    description: Succesful response
+                    content:
+                        application/json:
+                            schema: 
+                                $ref: '#/components/schemas/Todo'
+            
+        put:
+            summary: Update a todo by id
+            operation: updateTodo
+            tags:
+                - todos
+            parameters:
+                -   name: id
+                    in: path
+                    required: true
+                    description: Id of the todo be updated
+                    schema: 
+                        type: string
+            requestBody: 
+                required: true
+                description: Todo object to be updated
+                content:
+                    application/json:
+                        schema: 
+                            $ref: '#/components/schemas/Todo'
+            responses:
+                '200':
+                    description: Succesful response
+                    content:
+                        application/json:
+                            schema: 
+                                $ref: '#/components/schemas/Todo'
+        delete:
+            summary: Delete a todo by id
+            operationId: deleteTodo
+            tags:
+                - todos
+            parameters:
+                -   name: id
+                    in: path
+                    required: true
+                    description: Id of todo to be delete
+                    schema:
+                        type: string
+                    responses:
+                        '200':
+                            description: Succesful response
+                            content:
+                                application/json:
+                                    type: object
+                                    properties:
+                                        ok:
+                                            type: boolean
+
+components:
+    schemas:
+        Todo:
+            type: object
+            properties:
+                id:
+                    type: string
+                title:
+                    type: string
+                required:
+                    - id
+                    - title
+
+        TodoImput:
+            type: object
+            properties:
+                title:
+                    type: string
+                required:
+                    - title
